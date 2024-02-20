@@ -20,6 +20,7 @@
         IPv6SendRA = true;
         IPv6AcceptRA = false;  # 接受来自下游的 RA 是不必要的
       };
+      ipv6SendRAConfig = { Managed = true; OtherInformation = true; };
       dhcpPrefixDelegationConfig.Token = "::1";
     };
   };

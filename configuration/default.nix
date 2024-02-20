@@ -2,6 +2,7 @@
 {
   imports = [
     ./network/interface
+    ./network/dnsmasq.nix
     ./network/nftables.nix
     ./features/ddns.nix
     ./features/nix.nix

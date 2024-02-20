@@ -21,4 +21,7 @@
 
   sops.secrets."network/pppoe/name" = {};
   sops.secrets."network/pppoe/password" = {};
+
+  # AUTHORITATIVE SERVER
+  services.dnsmasq.settings.auth-server = "router.lostattractor.net,${network.interface.ppp}";
 }
