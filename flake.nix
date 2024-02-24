@@ -7,6 +7,8 @@
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+    daeuniverse.url = "github:daeuniverse/flake.nix/unstable";
+    daeuniverse.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { nixpkgs, deploy-rs, ... } @ inputs : 
@@ -26,6 +28,7 @@
         ./configuration
         { networking.hostName = "router"; }
         inputs.sops-nix.nixosModules.sops
+        inputs.daeuniverse.nixosModules.dae
       ];
     };
 
