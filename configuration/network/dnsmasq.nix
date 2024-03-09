@@ -4,14 +4,12 @@ _:
 let 
   domain = "home.lostattractor.net";
 in {
-  services.resolved.enable = false;
-
   services.dnsmasq = {
     enable = true;
+    # Get upstream from systemd-resolved 
+    # And using dnsmasq to resolve local queries
     resolveLocalQueries = true;
     settings = {
-      # Upstream
-      resolv-file = "/etc/ppp/resolv.conf";
       # Local domain
       domain = domain;
       local = "/${domain}/";  # Not forwarding local domain to upstream
