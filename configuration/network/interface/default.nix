@@ -5,7 +5,7 @@ _:
   networking.useDHCP = false;
 
   imports = [
-    ./wan/ppp
+    ./wan/dhcp
     ./br-lan
   ];
 }
