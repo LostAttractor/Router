@@ -45,11 +45,13 @@
       chain postrouting {
         type nat hook postrouting priority srcnat; policy accept;
 
-        # Masquerade private IP addresses
-        ip saddr $NET_PRIVATE oifname $DEV_WORLD masquerade
+        # Masquerade for layer 3 forwarding
+        iifname $DEV_PRIVATE oifname $DEV_WORLD masquerade
 
-        # Upstream does not know which interface it should send $NET_PRIVATE to, there is not route and gateway
-        ip saddr $NET_PRIVATE oifname $DEV_ONU masquerade
+        # As there is a layer 3 forwarding
+        # Upstream does not know which interface it should send $NET_PRIVATE to. 
+        # There is no routing or gateway here, and it cannot ARP as well.
+        iifname $DEV_PRIVATE oifname $DEV_ONU masquerade
       }
     }
   '';

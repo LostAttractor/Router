@@ -23,8 +23,8 @@
       chain postrouting {
         type nat hook postrouting priority srcnat; policy accept;
 
-        # Masquerade private IP addresses
-        ip saddr $NET_PRIVATE oifname $DEV_WORLD masquerade
+        # Masquerade for layer 3 forwarding
+        iifname $DEV_PRIVATE oifname $DEV_WORLD masquerade
       }
     }
   '';
