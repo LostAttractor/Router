@@ -1,12 +1,29 @@
-_:
+{ network, ... }:
 {
   # Configure firewall directly using nftables
   networking.firewall.enable = false;
 
   networking.nftables = {
     enable = true;
+
+    # https://discourse.nixos.org/t/nftables-could-not-process-rule-no-such-file-or-directory/33031
+    checkRuleset = false;
+
     ruleset = ''
       table inet filter {
+        # Enable flow offloading for better throughput
+        flowtable f {
+          # Either physical interface or bridge/layer two encapsulation interface can be used.
+          # Nftables is started before networkd, so the bridge and layer 2 encapsulated interfaces do not yet exist when nftables is started, 
+          # so it is necessary to bind to the physical interface.
+          # Also, a physical interface may have multiple Layer 2 encapsulations or bridges above it.
+          # https://docs.kernel.org/networking/nf_flowtable.html#layer-2-encapsulation
+          # https://docs.kernel.org/networking/nf_flowtable.html#bridge-and-ip-forwarding
+          hook ingress priority 0; devices = { ${network.interface.lan}, ${network.interface.wan} };
+          # Hardware offload only works on physical hardware
+          # flags offload;
+        }
+
         chain inbound_world {
           # Accepting ping (icmp-echo-request) for diagnostic purposes.
           # However, it also lets probes discover this host is alive.
@@ -34,6 +51,9 @@ _:
 
         chain forward {
           type filter hook forward priority filter; policy drop;
+
+          # Enable flow offloading for better throughput
+          ip protocol { tcp, udp } flow add @f
 
           # Clamp MSS to pMTU
           # Needed for interface such as ppp or vpns
