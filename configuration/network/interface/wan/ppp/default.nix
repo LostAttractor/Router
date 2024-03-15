@@ -37,8 +37,5 @@
     };
   };
 
-  networking.nftables.ruleset = ''
-    define DEV_WORLD = ${network.interface.ppp}
-    define DEV_ONU = ${network.interface.wan}
-  '';
+  network.nftables.interface.world = network.interface.ppp;
 }

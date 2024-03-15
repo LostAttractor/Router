@@ -16,9 +16,7 @@
     };
   };
 
-  networking.nftables.ruleset = ''
-    define DEV_WORLD = ${network.interface.wan}
-  '';
+  network.nftables.interface.world = network.interface.wan;
   
   # AUTHORITATIVE SERVER
   services.dnsmasq.settings.auth-server = "router.lostattractor.net,${network.interface.wan}";

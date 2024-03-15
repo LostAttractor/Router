@@ -26,8 +26,5 @@
     };
   };
 
-  networking.nftables.ruleset = ''
-    define DEV_PRIVATE = br-lan
-    define NET_PRIVATE = 192.168.8.0/24
-  '';
+  network.nftables.interface.private = "br-lan";
 }
