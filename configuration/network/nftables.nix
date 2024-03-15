@@ -61,8 +61,9 @@ in {
 
             # loopback: accept
             # ${interface.private}: accept
+            # ${interface.vpn}: accept
             # ${interface.world}: jump to -> inbound_world
-            iifname vmap { lo : accept, ${interface.private} : accept, ${interface.world} : jump inbound_world }
+            iifname vmap { lo : accept, ${interface.private} : accept, ${interface.vpn} : accept, ${interface.world} : jump inbound_world }
           }
 
           chain forward {
@@ -81,8 +82,9 @@ in {
             ct state vmap { established : accept, related : accept, invalid : drop }
 
             # ${interface.private}: accept
+            # ${interface.vpn}: accept
             # ${interface.world}: jump to -> inbound_world
-            iifname vmap { ${interface.private} : accept, ${interface.world} : jump inbound_world }
+            iifname vmap { ${interface.private} : accept, ${interface.vpn} : accept, ${interface.world} : jump inbound_world }
           }
         '';
       };

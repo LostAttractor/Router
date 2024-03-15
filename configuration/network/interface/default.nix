@@ -7,5 +7,6 @@ _:
   imports = [
     ./wan/dhcp
     ./br-lan
+    ./wireguard
   ];
 }

@@ -36,6 +36,7 @@
     ethtool                          # manage NIC settings (offload, NIC feeatures, ...)
     tcpdump                          # view network traffic
     conntrack-tools                  # view network connection states
+    wireguard-tools                  # view wireguard status
     dnsutils                         # dns tools
     iperf3 speedtest-go cfspeedtest  # speedtest tools
     tcping-go gping mtr trippy       # latency/tracing tools
