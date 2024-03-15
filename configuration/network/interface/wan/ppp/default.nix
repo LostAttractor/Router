@@ -40,19 +40,5 @@
   networking.nftables.ruleset = ''
     define DEV_WORLD = ${network.interface.ppp}
     define DEV_ONU = ${network.interface.wan}
-
-    table inet nat {
-      chain postrouting {
-        type nat hook postrouting priority srcnat; policy accept;
-
-        # Masquerade for layer 3 forwarding
-        iifname $DEV_PRIVATE oifname $DEV_WORLD masquerade
-
-        # As there is a layer 3 forwarding
-        # Upstream does not know which interface it should send $NET_PRIVATE to. 
-        # There is no routing or gateway here, and it cannot ARP as well.
-        iifname $DEV_PRIVATE oifname $DEV_ONU masquerade
-      }
-    }
   '';
 }

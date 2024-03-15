@@ -19,6 +19,7 @@
         DHCPPrefixDelegation = true;  # 自动选择第一个有 PD 的链路, 并获得子网前缀
         IPv6SendRA = true;
         IPv6AcceptRA = false;  # 接受来自下游的 RA 是不必要的
+        IPMasquerade = "ipv4";
       };
       ipv6SendRAConfig = { Managed = true; OtherInformation = true; };
       dhcpPrefixDelegationConfig.Token = "::1";

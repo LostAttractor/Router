@@ -18,15 +18,6 @@
 
   networking.nftables.ruleset = ''
     define DEV_WORLD = ${network.interface.wan}
-
-    table inet nat {
-      chain postrouting {
-        type nat hook postrouting priority srcnat; policy accept;
-
-        # Masquerade for layer 3 forwarding
-        iifname $DEV_PRIVATE oifname $DEV_WORLD masquerade
-      }
-    }
   '';
   
   # AUTHORITATIVE SERVER
