@@ -82,9 +82,15 @@
       # Bypass Private IP
       dip(geoip:private) -> direct
 
+      # Bypass DSCP 0x4 (e.g. Bittorrent)
+      dscp(0x4) -> direct
+
       # Bypass CN
       dip(geoip:cn) -> direct
       domain(geosite:cn) -> direct
+
+      # Bypass BT
+      dscp(0x4) -> direct
 
       # Proxy
       dip(geoip:hk) -> proxy_hk
