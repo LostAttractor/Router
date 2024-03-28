@@ -1,8 +1,8 @@
 { network, ... }:
 {
   systemd.network = {
-    networks."10-${network.interface.wan}" = {
-      name = network.interface.wan;
+    networks."10-${network.interface.onu}" = {
+      name = network.interface.onu;
       networkConfig = {
         DHCP = "yes";
         Address = "192.168.1.2/24";
@@ -20,8 +20,8 @@
     };
   };
 
-  network.nftables.interface.world = network.interface.wan;
+  network.nftables.interface.world = network.interface.onu;
   
   # AUTHORITATIVE SERVER
-  services.dnsmasq.settings.auth-server = "router.lostattractor.net,${network.interface.wan}";
+  services.dnsmasq.settings.auth-server = "router.lostattractor.net,${network.interface.onu}";
 }

@@ -5,8 +5,8 @@
   # https://github.com/JQ-Networks/NixOS/blob/a7bf792a4411971d8229eb43a3547097ab06e65b/services/ppp/default.nix#L137
   # https://github.com/RMTT/machines/blob/b58cddca27d81c8bed8fa44e1db4b20dceded40d/nixos/modules/services/pppoe.nix#L49
   systemd.network = {
-    networks."10-${network.interface.wan}" = {  # ONU上联接口 / 仅用于管理ONU
-      name = network.interface.wan;
+    networks."10-${network.interface.onu}" = {  # ONU上联接口 / 仅用于管理ONU
+      name = network.interface.onu;
       networkConfig.DHCP = "yes";
       dhcpV4Config = {
         UseRoutes = false;

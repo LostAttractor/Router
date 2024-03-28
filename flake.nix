@@ -15,8 +15,9 @@
   let
     network.interface = {
       lan = "enp6s18";
-      wan = "enp6s19";
       ppp = "pppoe-wan";
+      onu = "enp6s22"; # VLAN 4094
+      wg = "wg0"; # Wireguard
     };
   in rec {
     # Router@NUC9.home.lostattractor.net

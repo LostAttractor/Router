@@ -35,7 +35,7 @@ in {
             # Also, a physical interface may have multiple Layer 2 encapsulations or bridges above it.
             # https://docs.kernel.org/networking/nf_flowtable.html#layer-2-encapsulation
             # https://docs.kernel.org/networking/nf_flowtable.html#bridge-and-ip-forwarding
-            hook ingress priority 0; devices = { ${network.interface.lan}, ${network.interface.wan} };
+            hook ingress priority 0; devices = { ${network.interface.lan}, ${network.interface.onu} };
             # Hardware offload only works on physical hardware
             # flags offload;
           }
