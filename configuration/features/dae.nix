@@ -27,6 +27,7 @@
 
     subscription {
       nexitally: '${config.sops.placeholder."dae/subscription/nexitally"}'
+      cnix: '${config.sops.placeholder."dae/subscription/cnix"}'
     }
 
     # See https://github.com/daeuniverse/dae/blob/main/docs/en/configuration/dns.md for full examples.
@@ -44,20 +45,29 @@
     }
 
     group {
+      proxy {
+        filter: subtag(nexitally) && name(keyword: 'Japan') && !name(keyword: 'Premium')
+        filter: subtag(cnix) && name(keyword: 'PVCC') [add_latency: +1000ms]
+        policy: min_avg10
+      }
       proxy_jp {
-        filter: name(keyword: 'Japan') && !name(keyword: 'Premium')
+        filter: subtag(nexitally) && name(keyword: 'Japan') && !name(keyword: 'Premium')
+        filter: subtag(cnix) && name(keyword: '日本') [add_latency: +1000ms]
         policy: min_avg10
       }
       proxy_hk {
-        filter: name(keyword: 'Hong Kong') && !name(keyword: 'Premium')
+        filter: subtag(nexitally) && name(keyword: 'Hong Kong') && !name(keyword: 'Premium')
+        filter: subtag(cnix) && name(keyword: '香港') [add_latency: +1000ms]
         policy: min_avg10
       }
       proxy_tw {
-        filter: name(keyword: 'Taiwan') && !name(keyword: 'Premium')
+        filter: subtag(nexitally) && name(keyword: 'Taiwan') && !name(keyword: 'Premium')
+        filter: subtag(cnix) && name(keyword: '台湾') [add_latency: +1000ms]
         policy: min_avg10
       }
       proxy_sg {
-        filter: name(keyword: 'Singapore') && !name(keyword: 'Premium')
+        filter: subtag(nexitally) && name(keyword: 'Singapore') && !name(keyword: 'Premium')
+        filter: subtag(cnix) && name(keyword: '新加坡') [add_latency: +1000ms]
         policy: min_avg10
       }
     }
@@ -93,12 +103,14 @@
       dscp(0x4) -> direct
 
       # Proxy
+      dip(geoip:jp) -> proxy_jp
       dip(geoip:hk) -> proxy_hk
       dip(geoip:tw) -> proxy_tw
       dip(geoip:sg) -> proxy_sg
-      fallback: proxy_jp
+      fallback: proxy
     }
   '';
 
   sops.secrets."dae/subscription/nexitally" = {};
+  sops.secrets."dae/subscription/cnix" = {};
 }
