@@ -1,18 +1,25 @@
 { network, ... }:
 {
   systemd.network = {
-    netdevs."20-br-lan".netdevConfig = {
+    netdevs."10-br-lan".netdevConfig = {
       Kind = "bridge";
       Name = "br-lan";
     };
-    networks."30-${network.interface.lan}" = {
+    networks."20-${network.interface.lan}" = {
       name = network.interface.lan;
       networkConfig = {
         Bridge = "br-lan";
         LinkLocalAddressing = "no";
       };
     };
-    networks."40-br-lan" = {
+    networks."20-${network.interface.direct}" = {
+      name = network.interface.direct;
+      networkConfig = {
+        Bridge = "br-lan";
+        LinkLocalAddressing = "no";
+      };
+    };
+    networks."30-br-lan" = {
       name ="br-lan";
       networkConfig = {
         Address = "10.0.0.1/16";

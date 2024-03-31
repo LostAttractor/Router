@@ -1,7 +1,7 @@
 { config, network, ... }:
 {
   systemd.network = {
-    netdevs."50-${network.interface.wg}" = {
+    netdevs."10-${network.interface.wg}" = {
       netdevConfig = {
         Kind = "wireguard";
         Name = network.interface.wg;
@@ -22,7 +22,7 @@
         };}
       ];
     };
-    networks."50-${network.interface.wg}" = {
+    networks."20-${network.interface.wg}" = {
       name = network.interface.wg;
       address = [ "10.255.0.1/24" ];
       networkConfig.IPMasquerade = "ipv4";

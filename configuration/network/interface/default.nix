@@ -5,6 +5,7 @@ _:
   networking.useDHCP = false;
 
   imports = [
+    ./vlan.nix
     ./wan/dhcp
     ./br-lan
     ./wireguard
