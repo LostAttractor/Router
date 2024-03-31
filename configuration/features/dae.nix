@@ -74,7 +74,7 @@
 
     # See https://github.com/daeuniverse/dae/blob/main/docs/en/configuration/routing.md for full examples.
     routing {
-      ### UDP Bypass
+      ## UDP Bypass
       # Because there is currently no UDP conntrack,
       # you need to allow the UDP Server's reply traffic to be directly connected
       # https://github.com/daeuniverse/dae/issues/475
@@ -89,21 +89,19 @@
       # https://github.com/daeuniverse/dae/issues/474
       # dport(53) && !pname(systemd-resolved) && !pname(dnsmasq) -> must_rules
 
-      # Bypass Private IP
+      ## Bypass Private IPs
       dip(geoip:private) -> direct
 
+      ## Application-based routing
+      # Block AD
+      domain(geosite:category-ads-all) -> block
       # Bypass DSCP 0x4 (e.g. Bittorrent)
       dscp(0x4) -> direct
 
-      # Block AD
-      domain(geosite:category-ads-all) -> block
-
+      ## Region-based routing
       # Bypass CN
       dip(geoip:cn) -> direct
       domain(geosite:cn) -> direct
-
-      # Bypass BT
-      dscp(0x4) -> direct
 
       # Proxy
       dip(geoip:jp) -> proxy_jp
