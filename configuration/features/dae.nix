@@ -95,6 +95,9 @@
       # Bypass DSCP 0x4 (e.g. Bittorrent)
       dscp(0x4) -> direct
 
+      # Block AD
+      domain(geosite:category-ads-all) -> block
+
       # Bypass CN
       dip(geoip:cn) -> direct
       domain(geosite:cn) -> direct
