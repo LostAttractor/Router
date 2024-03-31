@@ -15,7 +15,7 @@
     networks."40-br-lan" = {
       name ="br-lan";
       networkConfig = {
-        Address = "192.168.8.1/24";
+        Address = "10.0.0.1/16";
         DHCPPrefixDelegation = true;  # 自动选择第一个有 PD 的链路, 并获得子网前缀
         IPv6SendRA = true;
         IPv6AcceptRA = false;  # 接受来自下游的 RA 是不必要的
