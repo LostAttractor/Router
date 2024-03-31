@@ -9,7 +9,7 @@
   };
 
   sops.templates."edpnet".content = ''
-    plugin pppoe.so ${network.interface.onu}
+    plugin pppoe.so ${network.interface.upstream}
 
     name "${config.sops.placeholder."network/pppoe/name"}"
     password "${config.sops.placeholder."network/pppoe/password"}"

@@ -13,10 +13,16 @@
 
   outputs = { nixpkgs, deploy-rs, ... } @ inputs : 
   let
-    network.interface = {
-      lan = "enp6s18";
-      ppp = "pppoe-wan";
-      onu = "enp6s22"; # VLAN 4094
+    network.interface = rec {
+      # Physics
+      downstream = "enp1s0f0np0";
+      upstream = "enp1s0f1np1";
+      # Layer 2 encapsulated
+      lan = "lan";  # VLAN 1 on downstream
+      direct = "direct"; # VLAN 2 on downstream
+      onu = upstream; # Untagged on upstream / VLAN 4094 on downstream
+      ppp = "pppoe-wan"; # PPP on upstream
+      # SDN
       wg = "wg0"; # Wireguard
     };
   in rec {
