@@ -8,7 +8,7 @@
   sops.templates."config.dae".content = ''
     global {
       # Bind to LAN and/or WAN as you want. Replace the interface name to your own.
-      lan_interface: br-lan, ${network.interface.wg}
+      lan_interface: ${network.interface.lan}, ${network.interface.wg}
       wan_interface: auto # Use "auto" to auto detect WAN interface.
 
       log_level: info
