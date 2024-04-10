@@ -15,6 +15,8 @@
       allow_insecure: false
       auto_config_kernel_parameter: true
 
+      check_interval: 360s # or 180?
+
       # domain:   进行 SNI 嗅探, 会验证 SNI 是否可信, 通过发起一次DNS请求以判断SNI域名的解析结果是否和连接目标一致, 如果一致, 则覆盖连接目标为SNI域名
       #           这要求 DAE 监听所有客户端的 DNS 请求并进行缓存, 并要求客户端每次发起连接时都重新进行 DNS 查询, 以保证连接目标和 DAE 的缓存一致
       #           DAE 会篡改 TTL 为 0, 因此只要 DNS 查询链路尊重上游 TTL, 即便下游有缓存也不会导致问题, 而缓存工作由 DAE 完成
