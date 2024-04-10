@@ -71,6 +71,7 @@ in {
 
             # Enable flow offloading for better throughput
             ip protocol { tcp, udp } flow add @f
+            ip6 nexthdr { tcp, udp } flow add @f
 
             # Clamp MSS to pMTU
             # Needed for interface such as ppp or vpns
