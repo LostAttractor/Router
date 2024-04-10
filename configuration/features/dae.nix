@@ -76,13 +76,6 @@
 
     # See https://github.com/daeuniverse/dae/blob/main/docs/en/configuration/routing.md for full examples.
     routing {
-      ## UDP Bypass
-      # Because there is currently no UDP conntrack,
-      # you need to allow the UDP Server's reply traffic to be directly connected
-      # https://github.com/daeuniverse/dae/issues/475
-      # For example: dnsmasq
-      sport(53) && pname(dnsmasq) -> direct
-      
       # Hijack only DNS queries from dnsmasq and systemd-resolved
       dport(53) && pname(dnsmasq) -> direct
       dport(53) && pname(systemd-resolved) -> direct
