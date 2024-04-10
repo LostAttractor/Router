@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "anti-ad": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1712775427,
+        "narHash": "sha256-taZMThnz8v43ovHTx4S6gQV0qR1bvHRlNWSkbC4NzrM=",
+        "owner": "privacy-protection-tools",
+        "repo": "anti-AD",
+        "rev": "fbe03046f9b152708e5adbf563f7b8c58710e519",
+        "type": "github"
+      },
+      "original": {
+        "owner": "privacy-protection-tools",
+        "repo": "anti-AD",
+        "type": "github"
+      }
+    },
     "daeuniverse": {
       "inputs": {
         "devshell": "devshell",
@@ -434,6 +450,7 @@
     },
     "root": {
       "inputs": {
+        "anti-ad": "anti-ad",
         "daeuniverse": "daeuniverse",
         "deploy-rs": "deploy-rs",
         "nixpkgs": "nixpkgs_4",

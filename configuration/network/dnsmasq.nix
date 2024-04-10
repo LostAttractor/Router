@@ -1,4 +1,4 @@
-_:
+{ inputs, ... }:
 # https://openwrt.org/docs/guide-user/base-system/dhcp
 # https://thekelleys.org.uk/dnsmasq/docs/dnsmasq-man.html
 let 
@@ -51,6 +51,8 @@ in {
       ];
       # AUTHORITATIVE ZONE
       auth-zone = "${domain}";
+      # ADBlock
+      conf-file = "${inputs.anti-ad}/adblock-for-dnsmasq.conf";
     };
   };
 }

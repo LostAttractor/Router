@@ -39,7 +39,6 @@
       }
       routing {
         request {
-          qname(geosite:category-ads-all) -> reject
           qname(geosite:cn) -> asis
           fallback: googledns
         }
@@ -88,8 +87,6 @@
       dip(geoip:private) -> direct
 
       ## Application-based routing
-      # Block AD
-      domain(geosite:category-ads-all) -> block
       # Bypass DSCP 0x4 (e.g. Bittorrent)
       dscp(0x4) -> direct
 
