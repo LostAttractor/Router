@@ -75,9 +75,10 @@
 
     # See https://github.com/daeuniverse/dae/blob/main/docs/en/configuration/routing.md for full examples.
     routing {
-      # Hijack only DNS queries from dnsmasq and systemd-resolved
+      ### Hijack only DNS queries from dnsmasq
+      # The rules here ensure that DNS traffic can be routed correctly outside of DNS hijacking
+      dport(53) && pname(dnsmasq) && !dip(geoip:private) && !dip(geoip:cn) -> proxy
       dport(53) && pname(dnsmasq) -> direct
-      dport(53) && pname(systemd-resolved) -> direct
       dport(53) -> must_rules
       # TODO: Should be equivalent but doesn't work now
       # https://github.com/daeuniverse/dae/issues/474
