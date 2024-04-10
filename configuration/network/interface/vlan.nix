@@ -2,19 +2,20 @@
 {
   # https://unix.stackexchange.com/questions/215580/untagged-interface-in-linux
   systemd.network = {
-    # Carrier
+    ## Carrier
     networks."01-${network.interface.downstream}" = {
       name = network.interface.downstream;
       networkConfig = {
         LinkLocalAddressing = "no";
-        VLAN = with network.interface; [ lan direct ];
+        VLAN = with network.interface; [ lan direct security manage ];
       };
       linkConfig = {
         RequiredForOnline = false;
         MTUBytes = "9000";
       };
     };
-    # VLANs
+    ## VLANs
+    # lan zone
     netdevs."02-${network.interface.lan}" = {
       netdevConfig = {
         Kind = "vlan";
@@ -28,6 +29,22 @@
         Name = network.interface.direct;
       };
       vlanConfig.Id = 2;
+    };
+    # security zone
+    netdevs."02-${network.interface.security}" = {
+      netdevConfig = {
+        Kind = "vlan";
+        Name = network.interface.security;
+      };
+      vlanConfig.Id = 10;
+    };
+    # manage zone
+    netdevs."02-${network.interface.manage}" = {
+      netdevConfig = {
+        Kind = "vlan";
+        Name = network.interface.manage;
+      };
+      vlanConfig.Id = 100;
     };
   };
 }
