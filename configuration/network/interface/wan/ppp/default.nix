@@ -16,7 +16,6 @@
     networks."10-${network.interface.ppp}" = {
       name = network.interface.ppp;
       networkConfig = {
-        # DHCPPrefixDelegation = true;  # 让当前接口也像 br-lan 一样通过 PD 获得一个地址
         DHCP = "ipv6";  # 需要先接收到包含 M Flag 的 RA 才会尝试 DHCP-PD
         KeepConfiguration = "static";  # 防止清除 PPPD 通过 IPCP 获取的 IPV4 地址
       };
@@ -24,11 +23,6 @@
         WithoutRA = "solicit";  # 允许上游 RA 没有 M Flag 时启用 DHCP-PD
         UseDNS = false;
         UseAddress = false;  # 无法获得到地址时需要
-      };
-      dhcpPrefixDelegationConfig = {
-        UplinkInterface = ":self";
-        SubnetId = 0;
-        Announce = false;
       };
       routes = [
         { routeConfig = { Gateway = "0.0.0.0"; }; }  # v4默认路由, 因为v4不是networkd管理的，所以仅在reconfigure时工作
