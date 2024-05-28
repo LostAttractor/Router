@@ -31,5 +31,5 @@
     };
   };
 
-  network.nftables.interface.world = network.interface.ppp;
+  network.interface.world = network.interface.ppp;
 }

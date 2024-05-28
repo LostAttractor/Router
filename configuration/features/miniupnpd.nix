@@ -4,7 +4,7 @@
   services.miniupnpd = {
     enable = true;
     natpmp = true;
-    externalInterface = config.network.nftables.interface.world;
-    internalIPs = [ config.network.nftables.interface.private ];
+    externalInterface = config.network.interface.world;
+    internalIPs = [ config.network.interface.private.lan ];
   };
 }

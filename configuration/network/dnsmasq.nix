@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, config, ... }:
 # https://openwrt.org/docs/guide-user/base-system/dhcp
 # https://thekelleys.org.uk/dnsmasq/docs/dnsmasq-man.html
 let 
@@ -15,10 +15,10 @@ in {
       local = "/${domain}/";  # Not forwarding local domain to upstream
       expand-hosts = true;
       # Interface bind
-      interface = "br-lan";
+      interface = [ config.network.interface.private.lan config.network.interface.private.security config.network.interface.private.manage ];
       bind-dynamic = true;
       # Bind domain to interface's IPs
-      interface-name = "router.${domain},br-lan";
+      interface-name = "router.${domain},${config.network.interface.private.lan}";
       # Cache
       cache-size = 8192;
       no-negcache = true;
@@ -36,10 +36,15 @@ in {
       dhcp-broadcast = "tag:needs-broadcast";
       dhcp-ignore-names = "tag:dhcp_bogus_hostname";
       dhcp-range = [
-        "set:br-lan,10.0.1.0,10.0.254.255"  # Reserve 10.0.0.0/24 & 10.0.255.0/24
-        "set:br-lan,::ff,::ffff,constructor:br-lan,ra-names,1h"
-        # TODO: IPv6需要通过让接口获得不一样的前缀来区分地址, 这里只实现保留大部分后缀地址，但不区分前缀
-        # 未来的管理面VLAN和生成环境VLAN可能或需要不同的前缀用于区分
+        # lan
+        "set:${config.network.interface.private.lan},10.0.1.0,10.0.254.255"  # Reserve 10.0.0.0/24 & 10.0.255.0/24
+        "set:${config.network.interface.private.lan},::fff,::ffff,constructor:${config.network.interface.private.lan},ra-names"
+        # security
+        "set:${config.network.interface.private.security},10.10.1.0,10.10.254.255"  # Reserve 10.10.0.0/24 & 10.10.255.0/24
+        "set:${config.network.interface.private.security},::fff,::ffff,constructor:${config.network.interface.private.security},ra-names"
+        # manage
+        "set:${config.network.interface.private.manage},10.100.1.0,10.100.254.255"  # Reserve 10.100.0.0/24 & 10.100.255.0/24
+        "set:${config.network.interface.private.manage},::fff,::ffff,constructor:${config.network.interface.private.manage},ra-names"
       ];
       read-ethers = true;
       # CNAME
