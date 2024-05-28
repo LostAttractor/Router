@@ -29,6 +29,7 @@
 
     subscription {
       nexitally: '${config.sops.placeholder."dae/subscription/nexitally"}'
+      imm: '${config.sops.placeholder."dae/subscription/imm"}'
       cnix: '${config.sops.placeholder."dae/subscription/cnix"}'
     }
 
@@ -48,26 +49,31 @@
     group {
       proxy {
         filter: subtag(nexitally) && name(keyword: 'Japan') && !name(keyword: 'Premium')
+        filter: subtag(imm) && name(keyword: 'JPN')
         filter: subtag(cnix) && name(keyword: 'PVCC') [add_latency: +1000ms]
         policy: min_avg10
       }
       proxy_jp {
         filter: subtag(nexitally) && name(keyword: 'Japan') && !name(keyword: 'Premium')
+        filter: subtag(imm) && name(keyword: 'JPN')
         filter: subtag(cnix) && name(keyword: '日本') [add_latency: +1000ms]
         policy: min_avg10
       }
       proxy_hk {
         filter: subtag(nexitally) && name(keyword: 'Hong Kong') && !name(keyword: 'Premium')
+        filter: subtag(imm) && name(keyword: 'HKG')
         filter: subtag(cnix) && name(keyword: '香港') [add_latency: +1000ms]
         policy: min_avg10
       }
       proxy_tw {
         filter: subtag(nexitally) && name(keyword: 'Taiwan') && !name(keyword: 'Premium')
+        filter: subtag(imm) && name(keyword: 'TWN')
         filter: subtag(cnix) && name(keyword: '台湾') [add_latency: +1000ms]
         policy: min_avg10
       }
       proxy_sg {
         filter: subtag(nexitally) && name(keyword: 'Singapore') && !name(keyword: 'Premium')
+        filter: subtag(imm) && name(keyword: 'SGP')
         filter: subtag(cnix) && name(keyword: '新加坡') [add_latency: +1000ms]
         policy: min_avg10
       }
@@ -106,5 +112,6 @@
   '';
 
   sops.secrets."dae/subscription/nexitally" = {};
+  sops.secrets."dae/subscription/imm" = {};
   sops.secrets."dae/subscription/cnix" = {};
 }
