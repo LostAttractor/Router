@@ -19,7 +19,7 @@
       - ipv6:
           enable: true
           gettype: netInterface
-          netinterface: br-lan
+          netinterface: ${config.network.interface.private.lan}
           domains:
             - ns.lostattractor.net
         dns:
