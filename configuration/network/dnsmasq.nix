@@ -4,12 +4,14 @@
 let 
   domain = "home.lostattractor.net";
 in {
+  services.resolved.enable = false;
+
   services.dnsmasq = {
     enable = true;
-    # Get upstream from systemd-resolved 
-    # And using dnsmasq to resolve local queries
-    resolveLocalQueries = true;
     settings = {
+      # Upstream (mosdns)
+      server = [ "127.0.0.53" ];
+      no-resolv = true;
       # Local domain
       domain = domain;
       local = "/${domain}/";  # Not forwarding local domain to upstream
