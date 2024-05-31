@@ -3,6 +3,7 @@
   imports = [
     ./network/interface
     ./network/dnsmasq.nix
+    ./network/mosdns.nix
     ./network/nftables.nix
     ./features/ddns.nix
     ./features/miniupnpd.nix

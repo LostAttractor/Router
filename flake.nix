@@ -9,7 +9,10 @@
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     daeuniverse.url = "github:daeuniverse/flake.nix/unstable";
     daeuniverse.inputs.nixpkgs.follows = "nixpkgs";
+    eh5.url = "github:EHfive/flakes";
+    eh5.inputs.nixpkgs.follows = "nixpkgs";
     oisd = { url = "github:sjhgvr/oisd"; flake = false; };
+    geosite = { url = "github:v2fly/domain-list-community/release"; flake = false; };
   };
 
   outputs = { nixpkgs, deploy-rs, ... } @ inputs : 
@@ -39,6 +42,9 @@
         { networking.hostName = "router"; }
         inputs.sops-nix.nixosModules.sops
         inputs.daeuniverse.nixosModules.dae
+        inputs.eh5.nixosModules.mosdns
+        { nixpkgs.overlays = [ inputs.eh5.overlays.default ]; }
+        { nixpkgs.overlays = [ inputs.eh5.overlay ]; }
       ];
     };
 
