@@ -57,7 +57,7 @@ in {
       # AUTHORITATIVE ZONE
       auth-zone = "${domain}";
       # ADBlock
-      conf-file = "${inputs.anti-ad}/adblock-for-dnsmasq.conf";
+      conf-file = "${inputs.oisd}/dnsmasq2_big.txt";
     };
   };
 }
