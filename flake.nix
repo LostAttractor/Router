@@ -9,7 +9,7 @@
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     daeuniverse.url = "github:daeuniverse/flake.nix/unstable";
     daeuniverse.inputs.nixpkgs.follows = "nixpkgs";
-    anti-ad = { url = "github:privacy-protection-tools/anti-AD"; flake = false; };
+    oisd = { url = "github:sjhgvr/oisd"; flake = false; };
   };
 
   outputs = { nixpkgs, deploy-rs, ... } @ inputs : 
