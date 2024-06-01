@@ -12,14 +12,14 @@
         ListenPort = 51820;
       };
       wireguardPeers = [
-        { wireguardPeerConfig = {
+        {
           PublicKey = "WLfPF6oBHGdZkq0ZkPVQSlkfnEiFU1+xtqNT7W7rRjw=";
           AllowedIPs = [ "10.255.0.2" ];
-        };}
-        { wireguardPeerConfig = {
+        }
+        {
           PublicKey = "RAqne2m36M6i48XDa9kBmfjGR/EsgYm6xsJte75DVhA=";
           AllowedIPs = [ "10.255.0.3" ];
-        };}
+        }
       ];
     };
     networks."20-${network.interface.wg}" = {

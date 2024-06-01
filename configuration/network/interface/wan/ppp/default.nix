@@ -25,8 +25,8 @@
         UseAddress = false;  # 无法获得到地址时需要
       };
       routes = [
-        { routeConfig = { Gateway = "0.0.0.0"; }; }  # v4默认路由, 因为v4不是networkd管理的，所以仅在reconfigure时工作
-        { routeConfig = { Gateway = "::"; }; }  # v6默认路由
+        { Gateway = "0.0.0.0"; }  # v4默认路由, 因为v4不是networkd管理的，所以仅在reconfigure时工作
+        { Gateway = "::"; }  # v6默认路由
       ];
     };
   };
