@@ -10,7 +10,7 @@
       dhcpV4Config.UseRoutes = false;
       dhcpV6Config.WithoutRA = "solicit";  # 允许上游 RA 没有 M Flag 时启用 DHCP-PD
       # 将 v4 默认路由的 src 改为设置的静态地址
-      routes = [{ routeConfig = { Gateway = "_dhcp4"; PreferredSource = "192.168.1.2"; }; }];
+      routes = [{ Gateway = "_dhcp4"; PreferredSource = "192.168.1.2"; }];
     };
   };
 
