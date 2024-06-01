@@ -23,7 +23,8 @@ in {
       interface-name = "router.${domain},${config.network.interface.private.lan}";
       # Cache
       cache-size = 8192;
-      no-negcache = true;
+      # This will cause a re-request to the upstream every time you resolve the ipv4 single-stack domain name because the ipv6 address is not obtained and cached.
+      # no-negcache = true;
       # Ensure requests for local hostnames (without dots or domain parts) aren't forwarded to upstream DNS servers
       domain-needed = true;
       # Pervent reverse DNS lookups for local hosts
