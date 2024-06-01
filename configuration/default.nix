@@ -7,6 +7,7 @@
     ./network/nftables.nix
     ./features/ddns.nix
     ./features/miniupnpd.nix
+    ./features/avahi.nix
     ./features/dae.nix
     ./features/nix.nix
     ./features/fish.nix
