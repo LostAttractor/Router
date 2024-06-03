@@ -10,10 +10,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  proxmox.qemuConf = {
-    bios = "ovmf";
-    scsihw = "virtio-scsi-single";
-  };
+  proxmox.qemuConf.bios = "ovmf";
 
   # Zen Kernel
   boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_zen;
