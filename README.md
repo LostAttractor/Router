@@ -147,5 +147,5 @@ DAE根据GEOIP的地区进行分流, 为了保证流量被分流到默认代理�
 ## Proxmox Image
 To generate proxmox image:
 ```sh
-nix run github:nix-community/nixos-generators -- -c proxmox.nix -f proxmox
+nix build .#nixosConfigurations.bootstrap.config.system.build.VMA
 ```
