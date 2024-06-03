@@ -65,6 +65,9 @@
       nixosConfigurations = mapAttrs' (name: config:
         nameValuePair name config.config.system.build.toplevel)
         nixosConfigurations;
+      VMA = mapAttrs' (name: config:
+        nameValuePair name config.config.system.build.VMA)
+        nixosConfigurations;
     };
   };
 }
