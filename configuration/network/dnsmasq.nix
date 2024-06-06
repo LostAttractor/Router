@@ -49,6 +49,12 @@ in {
         "set:${config.network.interface.private.manage},10.100.1.0,10.100.254.255"  # Reserve 10.100.0.0/24 & 10.100.255.0/24
         "set:${config.network.interface.private.manage},::fff,::ffff,constructor:${config.network.interface.private.manage},ra-names"
       ];
+      # Binding
+      dhcp-host = [
+        "30:37:b3:8b:58:60,LeaderAP"
+        "78:60:5b:97:dc:70,TL-ST5008F"
+        "68:dd:b7:0c:ec:3c,TL-SE2109PB"
+      ];
       read-ethers = true;
       # CNAME
       cname = [
