@@ -5,10 +5,10 @@
     ./network/dnsmasq.nix
     ./network/mosdns.nix
     ./network/nftables.nix
-    ./features/ddns.nix
-    ./features/miniupnpd.nix
-    ./features/avahi.nix
-    ./features/dae.nix
+    ./features/network/ddns.nix
+    ./features/network/miniupnpd.nix
+    ./features/network/avahi.nix
+    ./features/network/dae.nix
     ./features/nix.nix
     ./features/fish.nix
     ./features/prometheus.nix
