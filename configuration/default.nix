@@ -11,7 +11,7 @@
     ./features/network/dae.nix
     ./features/nix.nix
     ./features/fish.nix
-    ./features/prometheus.nix
+    ./features/telemetry.nix
     ./user.nix
   ];
 
