@@ -29,7 +29,7 @@
     };
   };
 
-  network.interface.private.vpn = network.interface.wg;
+  network.interface.private.wg = network.interface.wg;
 
   sops.secrets."network/wireguard/privkey" = { 
     mode = "0440";
