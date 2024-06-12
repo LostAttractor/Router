@@ -1,8 +1,8 @@
-{ inputs, config, ... }:
+{ inputs, config, network, ... }:
 # https://openwrt.org/docs/guide-user/base-system/dhcp
 # https://thekelleys.org.uk/dnsmasq/docs/dnsmasq-man.html
-let 
-  domain = "home.lostattractor.net";
+let
+  domain = network.domain;
 in {
   services.resolved.enable = false;
 
