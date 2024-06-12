@@ -15,7 +15,4 @@
   };
 
   network.interface.world = network.interface.onu;
-  
-  # AUTHORITATIVE SERVER
-  services.dnsmasq.settings.auth-server = "router.lostattractor.net,${network.interface.onu}";
 }
