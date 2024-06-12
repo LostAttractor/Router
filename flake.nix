@@ -30,6 +30,7 @@
       ppp = "pppoe-wan"; # PPP on upstream
       # SDN
       wg = "wg0"; # Wireguard
+      tailscale = "tailscale0"; # Tailscale
     };
   in rec {
     # Router@NUC9.home.lostattractor.net

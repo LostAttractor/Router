@@ -49,8 +49,8 @@ with config.network.interface;
             ip protocol . th dport vmap { tcp . 22 : accept, udp . 53 : accept, tcp . 53 : accept, udp . 51820 : accept }
             ip6 nexthdr . th dport vmap { tcp . 22 : accept, udp . 53 : accept, tcp . 53 : accept, udp . 51820 : accept }
 
-            # Accepting traffic from loopback/lan/vpn
-            iifname vmap { lo : accept, ${private.lan} : accept, ${private.vpn} : accept }
+            # Accepting traffic from loopback/lan/vpns
+            iifname vmap { lo : accept, ${private.lan} : accept, ${private.wg} : accept, ${private.tailscale} : accept }
 
             # The rest is dropped by the above policy
           }
@@ -85,16 +85,16 @@ with config.network.interface;
             # Accepting traffic from established and related packets, drop invalid
             ct state vmap { established : accept, related : accept, invalid : drop }
 
-            # any     ->  world:    accept
-            # vpn     <-> lan:      accept
-            # lan/vpn ->  manage:   accept
-            # world   ->  lan/vpn:  jump weak_security_zone
-            # any     ->  security: jump strong_security_zone
+            # any      ->  world:    accept
+            # vpns     <-> lan:      accept
+            # lan/vpns ->  manage:   accept
+            # world    ->  lan/vpns: jump weak_security_zone
+            # any      ->  security: jump strong_security_zone
 
             oifname ${world} accept
-            meta iifname . meta oifname { ${private.lan} . ${private.vpn}, ${private.vpn} . ${private.lan} } accept
-            oifname ${private.manage} iifname vmap { ${private.lan} : accept, ${private.vpn} : accept }
-            iifname ${world} oifname vmap { ${private.lan} : jump weak_security_zone, ${private.vpn} : jump weak_security_zone }
+            meta iifname . meta oifname { ${private.lan} . ${private.wg}, ${private.lan} . ${private.tailscale}, ${private.wg} . ${private.lan}, ${private.tailscale} . ${private.lan} } accept
+            oifname ${private.manage} iifname vmap { ${private.lan} : accept, ${private.wg} : accept, ${private.tailscale} : accept }
+            iifname ${world} oifname vmap { ${private.lan} : jump weak_security_zone, ${private.wg} : jump weak_security_zone, ${private.tailscale} : jump weak_security_zone }
             oifname ${private.security} jump strong_security_zone
 
             # The rest is dropped by the above policy

@@ -8,6 +8,7 @@
     ./features/network/ddns.nix
     ./features/network/miniupnpd.nix
     ./features/network/avahi.nix
+    ./features/network/tailscale.nix
     ./features/network/dae.nix
     ./features/nix.nix
     ./features/fish.nix
@@ -29,9 +30,27 @@
     "net.ipv4.tcp_congestion_control" = "bbr";
     ## Queueing discipline
     "net.core.default_qdisc" = "cake";
+    ## UDP Buffersize (https://github.com/quic-go/quic-go/wiki/UDP-Buffer-Sizes)
+    "net.core.rmem_max" = 7500000;
+    "net.core.wmem_max" = 7500000;
   };
 
   boot.kernelModules = [ "tcp_bbr" ];
+
+  # https://nixos.wiki/wiki/Networkd-dispatcher
+  services.networkd-dispatcher = {
+    enable = true;
+    rules = {
+      "50-tailscale" = {
+        onState = [ "routable" ];
+        # https://www.kernel.org/doc/html/latest/networking/segmentation-offloads.html
+        script = ''
+          #!${pkgs.runtimeShell}
+          ${pkgs.ethtool}/bin/ethtool -K $IFACE rx-udp-gro-forwarding on rx-gro-list off
+        '';
+      };
+    };
+  };
 
   environment.systemPackages = with pkgs; [
     htop btop                        # to see the system load
