@@ -63,8 +63,9 @@ in {
         "portainer.${domain},nginx.${domain},alist.${domain},memos.${domain},pdf.${domain},container.${domain}"
         "uptime.${domain},prometheus.${domain},grafana.${domain},metrics.${domain}"
       ];
-      # AUTHORITATIVE ZONE
+      # AUTHORITATIVE
       auth-zone = "${domain}";
+      auth-server = "${domain},${config.network.interface.world}";
       # ADBlock
       conf-file = "${inputs.oisd}/dnsmasq2_big.txt";
     };
