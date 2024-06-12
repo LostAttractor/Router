@@ -24,7 +24,8 @@ with lib;
       lan = mkOption { type = types.str; };
       security = mkOption { type = types.str; };
       manage = mkOption { type = types.str; };
-      vpn = mkOption { type = types.str; };
+      wg = mkOption { type = types.str; };
+      tailscale = mkOption { type = types.str; };
     };
   };
 }
