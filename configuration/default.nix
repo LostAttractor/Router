@@ -26,8 +26,6 @@
     # data in the sender’s initial TCP SYN. Setting 3 = enable TCP Fast Open for
     # both incoming and outgoing connections:
     "net.ipv4.tcp_fastopen" = 3;
-    # Bufferbloat mitigations + slight improvement in throughput & latency
-    "net.ipv4.tcp_congestion_control" = "bbr";
     ## Queueing discipline
     "net.core.default_qdisc" = "cake";
     ## UDP Buffersize (https://github.com/quic-go/quic-go/wiki/UDP-Buffer-Sizes)
@@ -35,7 +33,6 @@
     "net.core.wmem_max" = 7500000;
   };
 
-  boot.kernelModules = [ "tcp_bbr" ];
 
   # https://nixos.wiki/wiki/Networkd-dispatcher
   services.networkd-dispatcher = {
