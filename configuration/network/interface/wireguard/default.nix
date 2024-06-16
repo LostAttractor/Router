@@ -25,7 +25,6 @@
     networks."20-${network.interface.wg}" = {
       name = network.interface.wg;
       address = [ "10.255.0.1/24" ];
-      networkConfig.IPMasquerade = "ipv4";
     };
   };
 

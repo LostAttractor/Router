@@ -102,16 +102,46 @@ with config.network.interface;
         '';
       };
       nat = {
-        family = "ip6";
+        family = "inet";
         content = ''
           chain postrouting {
             type nat hook postrouting priority srcnat; policy accept;
 
-            # masquerade ula addresses
-            ip6 saddr fc00::/7 ip6 daddr != fc00::/7 masquerade
+            # full-cone nat local address
+            ip saddr 10.0.0.0/8 ip daddr != 10.0.0.0/8 fullcone
+
+            # full-cone nat ula addresses
+            ip6 saddr fc00::/7 ip6 daddr != fc00::/7 fullcone
+          }
+
+          chain prerouting {
+            type nat hook prerouting priority dstnat; policy accept;
+            fullcone
           }
         '';
       };
     };
   };
+
+  nixpkgs.overlays = [
+    (final: prev: {
+      nftables = prev.nftables.overrideAttrs (oldAttrs: with prev; {
+        patches = oldAttrs.patches or [ ] ++ [
+          (fetchurl {
+            url = "https://raw.githubusercontent.com/wongsyrone/lede-1/master/package/network/utils/nftables/patches/999-01-nftables-add-fullcone-expression-support.patch";
+            hash = "sha256-4C/kiaLxxDGRH6V0wQCUk0ZIEKTKADd6KRv8U9lb6fU=";
+          })
+        ];
+      });
+      libnftnl = prev.libnftnl.overrideAttrs (oldAttrs: with prev; {
+        nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [ autoreconfHook ];
+        patches = oldAttrs.patches or [ ] ++ [
+          (fetchurl {
+            url = "https://raw.githubusercontent.com/wongsyrone/lede-1/master/package/libs/libnftnl/patches/999-01-libnftnl-add-fullcone-expression-support.patch";
+            hash = "sha256-il0TS51eQfzUfU6LzG9mmuFZvv5UpRF0YPY21jlsNQE=";
+          })
+        ];
+      });
+    })
+  ];
 }
