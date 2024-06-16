@@ -12,8 +12,8 @@
 
   proxmox.qemuConf.bios = "ovmf";
 
-  # Zen Kernel
-  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_zen;
+  # Xanmod Kernel
+  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_xanmod_latest;
 
   # Enable ZRAM
   zramSwap.enable = true;
