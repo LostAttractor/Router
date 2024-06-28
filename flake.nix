@@ -11,6 +11,8 @@
     daeuniverse.inputs.nixpkgs.follows = "nixpkgs";
     eh5.url = "github:EHfive/flakes";
     eh5.inputs.nixpkgs.follows = "nixpkgs";
+    vscode-server.url = "github:nix-community/nixos-vscode-server";
+    vscode-server.inputs.nixpkgs.follows = "nixpkgs";
     oisd = { url = "github:sjhgvr/oisd"; flake = false; };
     geosite = { url = "github:v2fly/domain-list-community/release"; flake = false; };
   };
@@ -46,6 +48,7 @@
         { networking.hostName = "router"; }
         inputs.sops-nix.nixosModules.sops
         inputs.daeuniverse.nixosModules.dae
+        inputs.vscode-server.nixosModules.default
         inputs.eh5.nixosModules.mosdns
         { nixpkgs.overlays = [ inputs.eh5.overlays.default ]; }
         { nixpkgs.overlays = [ inputs.eh5.overlay ]; }
