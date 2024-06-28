@@ -13,6 +13,7 @@
     ./features/nix.nix
     ./features/fish.nix
     ./features/telemetry.nix
+    ./features/develop.nix
     ./user.nix
   ];
 
