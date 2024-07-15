@@ -4,7 +4,7 @@
 # for a more complex example.
 keys:
   - &admin_lostattractor 57EDCBEDDE7ABA6B44377FF2B96725F36430B3D1
-  - &server_router age1fslt6kfsaaqss2j7kt0ynx6ua4c04snm5hxq25l2ryln4ahd29nsyxe8c7
+  - &server_router age1228fl3wyx640gz9uv3x8zrv3sk0yt5aftc63fpqgqwrnlnry4drqdysp84
 creation_rules:
   - path_regex: secrets.yaml
     key_groups:
