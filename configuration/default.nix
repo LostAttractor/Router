@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 {
   imports = [
     ./network/interface
@@ -7,13 +7,14 @@
     ./network/nftables.nix
     ./features/network/ddns.nix
     ./features/network/miniupnpd.nix
-    ./features/network/avahi.nix
     ./features/network/tailscale.nix
     ./features/network/dae.nix
-    ./features/nix.nix
-    ./features/fish.nix
+    (inputs.homelab + "/features/network/avahi")
+    (inputs.homelab + "/features/nix")
+    (inputs.homelab + "/features/fish.nix")
+    (inputs.homelab + "/features/develop.nix")
+    (inputs.homelab + "/features/telemetry/mdns.nix")
     ./features/telemetry.nix
-    ./features/develop.nix
     ./user.nix
   ];
 
@@ -66,6 +67,8 @@
     nmap
     strace
   ];
+
+  proxmox.qemuConf.net0 = "";
 
   sops.defaultSopsFile = ../secrets.yaml;
 

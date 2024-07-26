@@ -15,6 +15,8 @@
     vscode-server.inputs.nixpkgs.follows = "nixpkgs";
     oisd = { url = "github:sjhgvr/oisd"; flake = false; };
     geosite = { url = "github:v2fly/domain-list-community/release"; flake = false; };
+    homelab.url = "github:lostattractor/homelab";
+    homelab.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { nixpkgs, deploy-rs, ... } @ inputs : 
@@ -43,8 +45,8 @@
       system = "x86_64-linux";
       specialArgs = { inherit inputs network; };
       modules = [
-        ./hardware/kvm
         ./configuration
+        (inputs.homelab + "/hardware/kvm")
         { networking.hostName = "router"; }
         inputs.sops-nix.nixosModules.sops
         inputs.daeuniverse.nixosModules.dae
