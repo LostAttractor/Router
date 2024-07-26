@@ -5,6 +5,7 @@
     ./network/dnsmasq.nix
     ./network/mosdns.nix
     ./network/nftables.nix
+    ./network/hosts.nix
     ./features/network/ddns.nix
     ./features/network/miniupnpd.nix
     ./features/network/tailscale.nix
