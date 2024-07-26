@@ -14,8 +14,7 @@ with lib;
 
   config = {
     # Using systemd-networkd
-    systemd.network.enable = true;
-    networking.useDHCP = false;
+    networking.useNetworkd = true;
   };
 
   options.network.interface = {
