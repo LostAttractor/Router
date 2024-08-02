@@ -128,8 +128,8 @@ with config.network.interface;
       nftables = prev.nftables.overrideAttrs (oldAttrs: with prev; {
         patches = oldAttrs.patches or [ ] ++ [
           (fetchurl {
-            url = "https://raw.githubusercontent.com/wongsyrone/lede-1/master/package/network/utils/nftables/patches/999-01-nftables-add-fullcone-expression-support.patch";
-            hash = "sha256-4C/kiaLxxDGRH6V0wQCUk0ZIEKTKADd6KRv8U9lb6fU=";
+            url = "https://raw.githubusercontent.com/debiansid/nftables-fullcone/vyos/1.1.0-1/0001-nftables-add-fullcone-expression-support.patch";
+            hash = "sha256-CK1IDb/CrYMSXm52wj6k7CjJ1fZvupzxvDaRCBbOmVU=";
           })
         ];
       });
@@ -137,8 +137,8 @@ with config.network.interface;
         nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [ autoreconfHook ];
         patches = oldAttrs.patches or [ ] ++ [
           (fetchurl {
-            url = "https://raw.githubusercontent.com/wongsyrone/lede-1/master/package/libs/libnftnl/patches/999-01-libnftnl-add-fullcone-expression-support.patch";
-            hash = "sha256-il0TS51eQfzUfU6LzG9mmuFZvv5UpRF0YPY21jlsNQE=";
+            url = "https://raw.githubusercontent.com/debiansid/libnftnl-fullcone/vyos/1.2.7-1/0001-add-fullcone-expression-support.patch";
+            hash = "sha256-IQVaF3pg+c3omH82gDGa85VgqqYDwHMccDFCMUu1+rU=";
           })
         ];
       });
