@@ -16,14 +16,14 @@
     };
     ## VLANs
     # lan zone
-    netdevs."02-${network.interface.lan}" = {
+    netdevs."00-${network.interface.lan}" = {
       netdevConfig = {
         Kind = "vlan";
         Name = network.interface.lan;
       };
       vlanConfig.Id = 1;
     };
-    netdevs."02-${network.interface.direct}" = {
+    netdevs."00-${network.interface.direct}" = {
       netdevConfig = {
         Kind = "vlan";
         Name = network.interface.direct;
@@ -31,7 +31,7 @@
       vlanConfig.Id = 2;
     };
     # security zone
-    netdevs."02-${network.interface.security}" = {
+    netdevs."00-${network.interface.security}" = {
       netdevConfig = {
         Kind = "vlan";
         Name = network.interface.security;
@@ -39,7 +39,7 @@
       vlanConfig.Id = 10;
     };
     # manage zone
-    netdevs."02-${network.interface.manage}" = {
+    netdevs."00-${network.interface.manage}" = {
       netdevConfig = {
         Kind = "vlan";
         Name = network.interface.manage;

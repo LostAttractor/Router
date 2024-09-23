@@ -1,26 +1,26 @@
-{ network, config, ... }:
+{ network, ... }:
 {
   systemd.network = {
-    netdevs."10-${config.network.interface.private.lan}".netdevConfig = {
+    netdevs."00-${network.interface.br-lan}".netdevConfig = {
       Kind = "bridge";
-      Name = config.network.interface.private.lan;
+      Name = network.interface.br-lan;
     };
-    networks."20-${network.interface.lan}" = {
+    networks."10-${network.interface.lan}" = {
       name = network.interface.lan;
       networkConfig = {
-        Bridge = config.network.interface.private.lan;
+        Bridge = network.interface.br-lan;
         LinkLocalAddressing = "no";
       };
     };
-    networks."20-${network.interface.direct}" = {
+    networks."10-${network.interface.direct}" = {
       name = network.interface.direct;
       networkConfig = {
-        Bridge = config.network.interface.private.lan;
+        Bridge = network.interface.br-lan;
         LinkLocalAddressing = "no";
       };
     };
-    networks."30-${config.network.interface.private.lan}" = {
-      name = config.network.interface.private.lan;
+    networks."10-${network.interface.br-lan}" = {
+      name = network.interface.br-lan;
       networkConfig = {
         Address = [ "10.0.0.1/16" "fd23:3333:3333::1/64" ];
         DHCPPrefixDelegation = true;  # 自动选择第一个有 PD 的链路, 并获得子网前缀
@@ -32,5 +32,5 @@
     };
   };
 
-  network.interface.private.lan = "br-lan";
+  network.interface.private.lan = network.interface.br-lan;
 }
