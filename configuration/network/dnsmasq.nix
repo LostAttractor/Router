@@ -8,7 +8,7 @@ in {
 
   services.dnsmasq = {
     enable = true;
-    settings = {
+    settings = with config.network.interface; {
       # Upstream (mosdns)
       server = [ "127.0.0.53" ];
       no-resolv = true;
@@ -17,10 +17,10 @@ in {
       local = "/${domain}/";  # Not forwarding local domain to upstream
       expand-hosts = true;
       # Interface bind
-      interface = [ config.network.interface.private.lan config.network.interface.private.security config.network.interface.private.manage ];
+      interface = [ private.lan private.security private.manage ];
       bind-dynamic = true;
       # Bind domain to interface's IPs
-      interface-name = "router.${domain},${config.network.interface.private.lan}";
+      interface-name = "router.${domain},${private.lan}";
       # Cache
       cache-size = 8192;
       # This will cause a re-request to the upstream every time you resolve the ipv4 single-stack domain name because the ipv6 address is not obtained and cached.
@@ -40,14 +40,14 @@ in {
       dhcp-ignore-names = "tag:dhcp_bogus_hostname";
       dhcp-range = [
         # lan
-        "set:${config.network.interface.private.lan},10.0.1.0,10.0.254.255"  # Reserve 10.0.0.0/24 & 10.0.255.0/24
-        "set:${config.network.interface.private.lan},::fff,::ffff,constructor:${config.network.interface.private.lan},ra-names"
+        "set:${private.lan},10.0.1.0,10.0.254.255"  # Reserve 10.0.0.0/24 & 10.0.255.0/24
+        "set:${private.lan},::fff,::ffff,constructor:${private.lan},ra-names"
         # security
-        "set:${config.network.interface.private.security},10.10.1.0,10.10.254.255"  # Reserve 10.10.0.0/24 & 10.10.255.0/24
-        "set:${config.network.interface.private.security},::fff,::ffff,constructor:${config.network.interface.private.security},ra-names"
+        "set:${private.security},10.10.1.0,10.10.254.255"  # Reserve 10.10.0.0/24 & 10.10.255.0/24
+        "set:${private.security},::fff,::ffff,constructor:${private.security},ra-names"
         # manage
-        "set:${config.network.interface.private.manage},10.100.1.0,10.100.254.255"  # Reserve 10.100.0.0/24 & 10.100.255.0/24
-        "set:${config.network.interface.private.manage},::fff,::ffff,constructor:${config.network.interface.private.manage},ra-names"
+        "set:${private.manage},10.100.1.0,10.100.254.255"  # Reserve 10.100.0.0/24 & 10.100.255.0/24
+        "set:${private.manage},::fff,::ffff,constructor:${private.manage},ra-names"
       ];
       # Binding
       dhcp-host = [
@@ -65,7 +65,7 @@ in {
       ];
       # AUTHORITATIVE
       auth-zone = "${domain}";
-      auth-server = "${domain},${config.network.interface.world}";
+      auth-server = "${domain},${world}";
       # ADBlock
       conf-file = "${inputs.oisd}/dnsmasq2_big.txt";
     };
