@@ -33,6 +33,8 @@
         manage = "manage"; # VLAN 100 on downstream
         onu = upstream; # Untagged on upstream / VLAN 4094 on downstream
         ppp = "pppoe-wan"; # PPP on upstream
+        # Bridges
+        br-lan = "br-lan";
         # SDN
         wg = "wg0"; # Wireguard
         tailscale = "tailscale0"; # Tailscale
