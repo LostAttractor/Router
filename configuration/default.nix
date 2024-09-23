@@ -36,22 +36,6 @@
     "net.core.wmem_max" = 7500000;
   };
 
-
-  # https://nixos.wiki/wiki/Networkd-dispatcher
-  services.networkd-dispatcher = {
-    enable = true;
-    rules = {
-      "50-tailscale" = {
-        onState = [ "routable" ];
-        # https://www.kernel.org/doc/html/latest/networking/segmentation-offloads.html
-        script = ''
-          #!${pkgs.runtimeShell}
-          ${pkgs.ethtool}/bin/ethtool -K $IFACE rx-udp-gro-forwarding on rx-gro-list off
-        '';
-      };
-    };
-  };
-
   environment.systemPackages = with pkgs; [
     htop btop                        # to see the system load
     neofetch hyfetch                 # to see system infomation
