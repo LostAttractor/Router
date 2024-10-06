@@ -93,4 +93,97 @@
       ];
     };
   };
+
+  # https://icyleaf.com/2023/08/using-vector-transform-mosdns-logging-to-grafana-via-loki/
+  # https://gist.github.com/icyleaf/e98093f673b4b2850226db582447175a
+  services.vector = {
+    enable = true;
+    journaldAccess = true;
+    settings = {
+      sources.mosdns-log = {
+        type = "journald";
+        include_units = [ "mosdns" ];
+      };
+      transforms.mosdns-data = {
+        type = "remap";
+        inputs = [ "mosdns-log" ];
+        drop_on_error = true;
+        source = ''
+          del(.PRIORITY)
+          del(.SYSLOG_FACILITY)
+          del(._BOOT_ID)
+          del(._CAP_EFFECTIVE)
+          del(._CMDLINE)
+          del(._COMM)
+          del(._EXE)
+          del(._GID)
+          del(._MACHINE_ID)
+          del(._PID)
+          del(._RUNTIME_SCOPE)
+          del(._STREAM_ID)
+          del(._SYSTEMD_CGROUP)
+          del(._SYSTEMD_INVOCATION_ID)
+          del(._SYSTEMD_SLICE)
+          del(._SYSTEMD_UNIT)
+          del(._UID)
+          del(.__MONOTONIC_TIMESTAMP)
+          del(.__REALTIME_TIMESTAMP)
+          del(.__SEQNUM)
+          del(.__SEQNUM_ID)
+
+          message_parts = split!(.message, r'\t')
+
+          .timestamp = parse_timestamp!(message_parts[0], format: "%FT%T%.9fZ")
+          .level = message_parts[1]
+
+          if (length(message_parts) == 6) {
+            .plugin = message_parts[2]
+            .processor = message_parts[3]
+            .message = message_parts[4]
+
+            if (exists(message_parts[5])) {
+              .metadata = parse_json!(message_parts[5])
+              . = merge!(., .metadata)
+              del(.metadata)
+            }
+          } else {
+            .processor = message_parts[2]
+            .message = message_parts[3]
+
+            if (exists(message_parts[4])) {
+              .metadata = parse_json!(message_parts[4])
+              . = merge!(., .metadata)
+              del(.metadata)
+            }
+          }
+
+          if (exists(.query)) {
+            query_parts = split!(.query, r'\s')
+            .domain = query_parts[0]
+            .record = query_parts[2]
+            .address = query_parts[5]
+          }
+        '';
+      };
+      sinks = {
+        loki = {
+          type = "loki";
+          inputs = [ "mosdns-data" ];
+          endpoint = "http://metrics.home.lostattractor.net:3100";
+          encoding.codec = "json";
+          labels = {
+            app = "{{ SYSLOG_IDENTIFIER }}";
+            host = "{{ host }}";
+            message = "{{ message }}";
+          };
+          healthcheck.enabled = true;
+        };
+        debug = {
+          type = "console";
+          inputs = [ "mosdns-data" ];
+          encoding.codec = "json";
+        };
+      };
+    };
+  };
 }
