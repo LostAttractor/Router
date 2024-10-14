@@ -20,9 +20,10 @@
         onState = [ "routable" ];
         # https://www.kernel.org/doc/html/latest/networking/segmentation-offloads.html
         # https://tailscale.com/kb/1320/performance-best-practices#ethtool-configuration
+        # https://tailscale.com/blog/more-throughput
         script = ''
           #!${pkgs.runtimeShell}
-          ${pkgs.ethtool}/bin/ethtool -K $IFACE rx-udp-gro-forwarding on rx-gro-list off
+          ${pkgs.ethtool}/bin/ethtool -K $IFACE tx-udp-segmentation on rx-udp-gro-forwarding on rx-gro-list off
         '';
       };
     };
