@@ -51,7 +51,7 @@ in {
       ];
       # Binding
       dhcp-host = [
-        "30:37:b3:8b:58:60,LeaderAP"
+        "54:f6:e2:e6:6e:80,LeaderAP"
         "78:60:5b:97:dc:70,TL-ST5008F"
         "68:dd:b7:0c:ec:3c,TL-SE2109PB"
       ];
@@ -59,9 +59,11 @@ in {
       # CNAME
       cname = [
         "binarycache.${domain},hydra.${domain}"
-        "qbittorrent.${domain},nextcloud.${domain},emby.${domain},nixnas.${domain}"
-        "portainer.${domain},nginx.${domain},alist.${domain},memos.${domain},pdf.${domain},container.${domain}"
-        "uptime.${domain},prometheus.${domain},grafana.${domain},metrics.${domain}"
+        "qbittorrent.${domain},emby.${domain},jellyfin.${domain},immich.${domain},ipfs.${domain},api.ipfs.${domain},syncthing.${domain},nas.${domain}"
+        # "qbittorrent.legceynas.${domain},emby.legceynas.${domain},immich.legceynas.${domain},ipfs.legceynas.${domain},api.ipfs.legceynas.${domain},syncthing.legceynas.${domain},nixnas.${domain}"
+        "portainer.${domain},authentik.${domain},memos.${domain},pdf.${domain},longhorn.${domain},grafana.${domain},uptime.${domain},prometheus.${domain},loki.${domain},node0.${domain}"
+        "zabbix.${domain},metrics.${domain}"
+        "rancher.${domain},harvester.${domain}"
       ];
       # AUTHORITATIVE
       auth-zone = "${domain}";

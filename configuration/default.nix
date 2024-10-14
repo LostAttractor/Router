@@ -14,7 +14,7 @@
     (inputs.homelab + "/features/nix")
     (inputs.homelab + "/features/fish.nix")
     (inputs.homelab + "/features/develop.nix")
-    (inputs.homelab + "/features/telemetry/mdns.nix")
+    (import (inputs.homelab + "/features/telemetry/mdns.nix") ({ inherit config; promtail_password_file = config.sops.secrets.promtail.path; }))
     ./features/telemetry.nix
     ./user.nix
   ];
@@ -56,6 +56,7 @@
   proxmox.qemuConf.net0 = "";
 
   sops.defaultSopsFile = ../secrets.yaml;
+  sops.secrets.promtail.owner = "promtail";
 
   system.stateVersion = "24.05";
 }
