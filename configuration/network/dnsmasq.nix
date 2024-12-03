@@ -72,4 +72,7 @@ in {
       conf-file = "${inputs.oisd}/dnsmasq2_big.txt";
     };
   };
+
+  networking.firewall.allowedTCPPorts = [ 53 ];
+  networking.firewall.allowedUDPPorts = [ 53 ];
 }

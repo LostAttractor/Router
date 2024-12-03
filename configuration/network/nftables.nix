@@ -2,8 +2,11 @@
 
 with config.network.interface;
 {
-  # Configure firewall directly using nftables
-  networking.firewall.enable = false;
+  networking.firewall.trustedInterfaces = [ private.lan private.wg private.tailscale ];
+  networking.firewall.extraInputRules = ''
+    # Accepting DHCP Message from all local networks
+    iifname != ${world} udp dport 67 accept comment "DHCPv4 server"
+  '';
 
   networking.nftables = {
     enable = true;
@@ -27,32 +30,6 @@ with config.network.interface;
             hook ingress priority 0; devices = { ${network.interface.downstream}, ${network.interface.upstream} };
             # Hardware offload only works on physical hardware
             # flags offload;
-          }
-
-          chain inbound {
-            type filter hook input priority filter; policy drop;
-
-            # Accepting traffic from established and related packets, drop invalid
-            ct state vmap { established : accept, related : accept, invalid : drop }
-
-            # Accepting ICMP
-            ip protocol icmp limit rate 5/second accept
-            ip6 nexthdr icmpv6 limit rate 5/second accept
-
-            # Accepting DHCPv6 Message from ${world}
-            iifname ${world} udp dport dhcpv6-client udp sport dhcpv6-server accept
-
-            # Accepting DHCP Message from all local networks
-            iifname != ${world} udp dport 67 accept
-
-            # Accepting SSH/DNS/Wireguard from all networks
-            ip protocol . th dport vmap { tcp . 22 : accept, udp . 53 : accept, tcp . 53 : accept, udp . 51820 : accept }
-            ip6 nexthdr . th dport vmap { tcp . 22 : accept, udp . 53 : accept, tcp . 53 : accept, udp . 51820 : accept }
-
-            # Accepting traffic from loopback/lan/vpns
-            iifname vmap { lo : accept, ${private.lan} : accept, ${private.wg} : accept, ${private.tailscale} : accept }
-
-            # The rest is dropped by the above policy
           }
 
           chain weak_security_zone {
