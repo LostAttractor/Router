@@ -40,13 +40,13 @@ in {
       dhcp-ignore-names = "tag:dhcp_bogus_hostname";
       dhcp-range = [
         # lan
-        "set:${private.lan},10.0.1.0,10.0.254.255"  # Reserve 10.0.0.0/24 & 10.0.255.0/24
+        "set:${private.lan},10.0.1.0,10.0.254.255,24h"  # Reserve 10.0.0.0/24 & 10.0.255.0/24
         "set:${private.lan},::fff,::ffff,constructor:${private.lan},ra-names"
         # security
-        "set:${private.security},10.10.1.0,10.10.254.255"  # Reserve 10.10.0.0/24 & 10.10.255.0/24
+        "set:${private.security},10.10.1.0,10.10.254.255,24h"  # Reserve 10.10.0.0/24 & 10.10.255.0/24
         "set:${private.security},::fff,::ffff,constructor:${private.security},ra-names"
         # manage
-        "set:${private.manage},10.100.1.0,10.100.254.255"  # Reserve 10.100.0.0/24 & 10.100.255.0/24
+        "set:${private.manage},10.100.1.0,10.100.254.255,24h"  # Reserve 10.100.0.0/24 & 10.100.255.0/24
         "set:${private.manage},::fff,::ffff,constructor:${private.manage},ra-names"
       ];
       # Binding
