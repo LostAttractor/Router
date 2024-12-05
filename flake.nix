@@ -9,8 +9,6 @@
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     daeuniverse.url = "github:daeuniverse/flake.nix/unstable";
     daeuniverse.inputs.nixpkgs.follows = "nixpkgs";
-    eh5.url = "github:EHfive/flakes";
-    eh5.inputs.nixpkgs.follows = "nixpkgs";
     vscode-server.url = "github:nix-community/nixos-vscode-server";
     vscode-server.inputs.nixpkgs.follows = "nixpkgs";
     oisd = { url = "github:sjhgvr/oisd"; flake = false; };
@@ -54,12 +52,11 @@
         inputs.sops-nix.nixosModules.sops
         inputs.daeuniverse.nixosModules.dae
         inputs.vscode-server.nixosModules.default
-        inputs.eh5.nixosModules.mosdns
-        { nixpkgs.overlays = [ inputs.eh5.overlays.default ]; }
-        { nixpkgs.overlays = [ inputs.eh5.overlay ]; }
+        ./modules/mosdns
         {
           nixpkgs.overlays = [
             (final: prev: with prev;  {
+              mosdns = callPackage ./packages/mosdns { buildGoModule = pkgs.buildGo123Module; };
               v2dat-geoip = (callPackage ./packages/geoip { v2ray-rules-dat = inputs.v2ray-rules-dat; });
               v2dat-geosite = (callPackage ./packages/geosite { v2ray-rules-dat = inputs.v2ray-rules-dat; });
             })
