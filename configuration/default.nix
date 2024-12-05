@@ -10,6 +10,7 @@
     ./features/network/miniupnpd.nix
     ./features/network/tailscale.nix
     ./features/network/dae.nix
+    (inputs.homelab + "/features/basic.nix")
     (inputs.homelab + "/features/network/avahi")
     (inputs.homelab + "/features/nix")
     (inputs.homelab + "/features/fish.nix")
@@ -54,20 +55,15 @@
   };
 
   environment.systemPackages = with pkgs; [
-    htop btop                        # to see the system load
     neofetch hyfetch                 # to see system infomation
     ppp                              # for some manual debugging of pppd
-    ethtool                          # manage NIC settings (offload, NIC feeatures, ...)
-    tcpdump                          # view network traffic
     conntrack-tools                  # view network connection states
     wireguard-tools                  # view wireguard status
-    dnsutils                         # dns tools
     iperf3 speedtest-go cfspeedtest  # speedtest tools
     tcping-go gping mtr trippy       # latency/tracing tools
-    inetutils                        # telnet
     bridge-utils                     # brctl
-    nmap
-    strace
+    cloudflared                      # cloudflare zero trust
+    stuntman                         # stun
   ];
 
   proxmox.qemuConf.net0 = "";
