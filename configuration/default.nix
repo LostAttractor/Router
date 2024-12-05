@@ -19,8 +19,21 @@
     ./user.nix
   ];
 
+
+  # Load before sysctl (using systemd-modules-load.service)
+  boot.kernelModules = [ "nf_conntrack" ];
+
   # /proc/sys/ to should be writeble
   boot.kernel.sysctl = {
+    ### Conntrack
+    "net.netfilter.nf_conntrack_acct" = true;
+    "net.netfilter.nf_conntrack_timestamp" = true;
+    "net.netfilter.nf_conntrack_buckets" = 262144;
+    "net.netfilter.nf_conntrack_max" = 262144;
+    # Timeout
+    "net.netfilter.nf_conntrack_tcp_timeout_established" = 21600;
+    "net.netfilter.nf_conntrack_udp_timeout" = 60;
+    "net.netfilter.nf_conntrack_udp_timeout_stream" = 180;
     ## Layer 3 forwarding
     "net.ipv4.conf.all.forwarding" = true;
     "net.ipv6.conf.all.forwarding" = true;
@@ -29,7 +42,11 @@
     # data in the sender’s initial TCP SYN. Setting 3 = enable TCP Fast Open for
     # both incoming and outgoing connections:
     "net.ipv4.tcp_fastopen" = 3;
+    ## TCP congestion control
+    "net.ipv4.tcp_congestion_control" = "bbr";
     ## Queueing discipline
+    ## https://www.bufferbloat.net/projects/codel/wiki/
+    ## https://www.bufferbloat.net/projects/codel/wiki/Cake/
     "net.core.default_qdisc" = "cake";
     ## UDP Buffersize (https://github.com/quic-go/quic-go/wiki/UDP-Buffer-Sizes)
     "net.core.rmem_max" = 7500000;
