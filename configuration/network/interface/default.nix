@@ -6,6 +6,7 @@ with lib;
   imports = [
     ./vlan.nix
     ./wan/dhcp
+    ./wan/qos
     ./br-lan
     ./security
     ./manage
