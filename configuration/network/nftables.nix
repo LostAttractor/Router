@@ -84,7 +84,7 @@ with config.network.interface;
             type nat hook postrouting priority srcnat; policy accept;
 
             # full-cone nat local address
-            ip saddr 10.0.0.0/8 ip daddr != 10.0.0.0/8 fullcone
+            ip saddr 10.0.0.0/8 fullcone
 
             # full-cone nat ula addresses
             ip6 saddr fc00::/7 ip6 daddr != fc00::/7 fullcone
