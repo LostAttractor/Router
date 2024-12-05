@@ -3,6 +3,7 @@
   services.dae = {
     enable = true;
     configFile = config.sops.templates."config.dae".path;
+    assets = with pkgs; lib.mkForce [ v2dat-geoip v2dat-geosite ];
   };
 
   sops.templates."config.dae".content = ''
