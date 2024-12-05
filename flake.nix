@@ -15,6 +15,7 @@
     vscode-server.inputs.nixpkgs.follows = "nixpkgs";
     oisd = { url = "github:sjhgvr/oisd"; flake = false; };
     geosite = { url = "github:v2fly/domain-list-community/release"; flake = false; };
+    v2ray-rules-dat = { url = "github:Loyalsoldier/v2ray-rules-dat/release"; flake = false; };
     homelab.url = "github:lostattractor/homelab";
     homelab.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -56,6 +57,14 @@
         inputs.eh5.nixosModules.mosdns
         { nixpkgs.overlays = [ inputs.eh5.overlays.default ]; }
         { nixpkgs.overlays = [ inputs.eh5.overlay ]; }
+        {
+          nixpkgs.overlays = [
+            (final: prev: with prev;  {
+              v2dat-geoip = (callPackage ./packages/geoip { v2ray-rules-dat = inputs.v2ray-rules-dat; });
+              v2dat-geosite = (callPackage ./packages/geosite { v2ray-rules-dat = inputs.v2ray-rules-dat; });
+            })
+          ];
+        }
       ];
     };
 
