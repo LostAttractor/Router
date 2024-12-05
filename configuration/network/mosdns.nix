@@ -169,8 +169,13 @@
         loki = {
           type = "loki";
           inputs = [ "mosdns-data" ];
-          endpoint = "http://metrics.home.lostattractor.net:3100";
+          endpoint = "http://node0-rke.local:30001";
           encoding.codec = "json";
+          auth = {
+            strategy = "basic";
+            user = "main";
+            password = "\${LOKI_TOKEN:-}";
+          };
           labels = {
             app = "{{ SYSLOG_IDENTIFIER }}";
             host = "{{ host }}";
@@ -186,4 +191,7 @@
       };
     };
   };
+
+  systemd.services.vector.serviceConfig.EnvironmentFile = config.sops.secrets.vector.path;
+  sops.secrets.vector = {};
 }
