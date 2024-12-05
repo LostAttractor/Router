@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, pkgs, ... }:
 {
   services.mosdns ={
     enable = true;
@@ -14,11 +14,11 @@
         }
         {
           tag = "geosite-cn"; type = "domain_set";
-          args.files = [ "${inputs.geosite}/cn.txt" ];
+          args.files = [ "${pkgs.mosdns-geosite}/geosite_cn.txt" ];
         }
         {
-          tag = "geosite-!cn"; type = "domain_set";
-          args.files = [ "${inputs.geosite}/geolocation-!cn.txt" ];
+          tag = "geosite-geolocation-!cn"; type = "domain_set";
+          args.files = [ "${pkgs.mosdns-geosite}/geosite_geolocation-!cn.txt" ];
         }
         # Upstream
         {
