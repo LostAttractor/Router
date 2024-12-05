@@ -17,7 +17,7 @@
     homelab.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { nixpkgs, deploy-rs, ... } @ inputs : 
+  outputs = { self, nixpkgs, deploy-rs, ... } @ inputs : 
   let
     network = {
       interface = rec {
@@ -41,12 +41,12 @@
     };
   in rec {
     # Router@NUC9.home.lostattractor.net
-    nixosConfigurations."router" = nixpkgs.lib.nixosSystem {
+    nixosConfigurations."router" = nixpkgs.lib.nixosSystem rec {
       system = "x86_64-linux";
       specialArgs = { inherit inputs network; };
       modules = [
         ./configuration
-        (inputs.homelab + "/hardware/kvm")
+        (inputs.homelab + "/hardware/kvm/proxmox.nix")
         { networking.hostName = "router"; }
         inputs.sops-nix.nixosModules.sops
         inputs.daeuniverse.nixosModules.dae
@@ -84,8 +84,8 @@
       nixosConfigurations = mapAttrs' (name: config:
         nameValuePair name config.config.system.build.toplevel)
         nixosConfigurations;
-      VMA = mapAttrs' (name: config:
-        nameValuePair name config.config.system.build.VMA)
+      image = mapAttrs' (name: config:
+        nameValuePair name config.config.system.build.image)
         nixosConfigurations;
     };
   };

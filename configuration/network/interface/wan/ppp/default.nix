@@ -20,8 +20,8 @@
         KeepConfiguration = "static";  # 防止清除 PPPD 通过 IPCP 获取的 IPV4 地址
       };
       dhcpV6Config = {
-        WithoutRA = "solicit";  # 允许上游 RA 没有 M Flag 时启用 DHCP-PD
         UseDNS = false;
+        WithoutRA = "solicit";  # 允许收到的 RA 不包含 M Flag 时启用 DHCP-PD
         UseAddress = false;  # 无法获得到地址时需要
       };
       routes = [
