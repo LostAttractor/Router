@@ -32,7 +32,7 @@
     "net.netfilter.nf_conntrack_buckets" = 262144;
     "net.netfilter.nf_conntrack_max" = 262144;
     # Timeout
-    "net.netfilter.nf_conntrack_tcp_timeout_established" = 21600;
+    "net.netfilter.nf_conntrack_tcp_timeout_established" = 21600;  # Default: 432000
     "net.netfilter.nf_conntrack_udp_timeout" = 60;
     "net.netfilter.nf_conntrack_udp_timeout_stream" = 180;
     ## Layer 3 forwarding
@@ -50,8 +50,32 @@
     ## https://www.bufferbloat.net/projects/codel/wiki/Cake/
     "net.core.default_qdisc" = "cake";
     ## UDP Buffersize (https://github.com/quic-go/quic-go/wiki/UDP-Buffer-Sizes)
-    "net.core.rmem_max" = 7500000;
-    "net.core.wmem_max" = 7500000;
+    ## https://docs.redhat.com/en/documentation/red_hat_data_grid/7.2/html/performance_tuning_guide/networking_configuration#adjusting_send_receive_window_settings
+    "net.core.wmem_max" = 655360;
+    "net.core.rmem_max" = 26214400;
+    "net.ipv4.tcp_wmem" = "4096 16384 655360";
+    "net.ipv4.tcp_rmem" = "4096 87380 26214400";
+  };
+
+  # https://nixos.wiki/wiki/Networkd-dispatcher
+  services.networkd-dispatcher = {
+    enable = true;
+    rules = {
+      "50-offload" = {
+        onState = [ "routable" "carrier" ];
+        # https://www.kernel.org/doc/html/latest/networking/segmentation-offloads.html
+        # https://tailscale.com/kb/1320/performance-best-practices#ethtool-configuration
+        # https://tailscale.com/blog/more-throughput
+        # https://lore.kernel.org/netdev/90c19324a093536f1e0e2e3de3a36df4207a28d3.camel@redhat.com
+        # https://lore.kernel.org/netdev/20220203015140.3022854-15-eric.dumazet@gmail.com
+        script = ''
+          #!${pkgs.runtimeShell}
+          ${pkgs.ethtool}/bin/ethtool -K $IFACE tx-udp-segmentation on rx-udp-gro-forwarding on rx-gro-list off
+          ${pkgs.iproute2}/bin/ip link set dev $IFACE gso_max_size 524280 gro_max_size 524280
+          ${pkgs.iproute2}/bin/ip link set dev $IFACE gso_ipv4_max_size 524280 gro_ipv4_max_size 524280
+        '';
+      };
+    };
   };
 
   environment.systemPackages = with pkgs; [
