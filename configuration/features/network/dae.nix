@@ -6,6 +6,7 @@
     assets = with pkgs; lib.mkForce [ v2dat-geoip v2dat-geosite ];
   };
 
+  sops.templates."config.dae".reloadUnits = [ "dae.service" ];
   sops.templates."config.dae".content = ''
     global {
       # Bind to LAN and/or WAN as you want. Replace the interface name to your own.
