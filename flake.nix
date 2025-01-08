@@ -50,6 +50,7 @@
         { networking.hostName = "router"; }
         inputs.sops-nix.nixosModules.sops
         inputs.daeuniverse.nixosModules.dae
+        { services.dae.package = inputs.daeuniverse.packages.${system}.dae-experiment; }
         inputs.vscode-server.nixosModules.default
         ./modules/mosdns
         {
