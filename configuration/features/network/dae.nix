@@ -73,6 +73,9 @@
       # Bypass DSCP 0x4 (e.g. Bittorrent)
       dscp(0x4) -> direct
 
+      # Bypass Tailscale (P2P, so conntrack may work, but not reliable, rules only for `randomizeClientPort` is disable)
+      sport(41641) && dport(41641) && l4proto(udp) -> direct
+
       ## Region-based routing
       # Bypass CN
       dip(geoip:cn) -> direct
