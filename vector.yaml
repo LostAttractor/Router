@@ -1,0 +1,90 @@
+sources:
+  mosdns-log:
+    type: journald
+    include_units:
+      - mosdns
+
+transforms:
+  mosdns-data:
+    type: remap
+    inputs:
+      - mosdns-log
+    drop_on_error: true
+    source: |
+      del(.PRIORITY)
+      del(.SYSLOG_FACILITY)
+      del(._BOOT_ID)
+      del(._CAP_EFFECTIVE)
+      del(._CMDLINE)
+      del(._COMM)
+      del(._EXE)
+      del(._GID)
+      del(._MACHINE_ID)
+      del(._PID)
+      del(._RUNTIME_SCOPE)
+      del(._STREAM_ID)
+      del(._SYSTEMD_CGROUP)
+      del(._SYSTEMD_INVOCATION_ID)
+      del(._SYSTEMD_SLICE)
+      del(._SYSTEMD_UNIT)
+      del(._UID)
+      del(.__MONOTONIC_TIMESTAMP)
+      del(.__REALTIME_TIMESTAMP)
+      del(.__SEQNUM)
+      del(.__SEQNUM_ID)
+
+      message_parts = split!(.message, r'\t')
+
+      .timestamp = parse_timestamp!(message_parts[0], format: "%FT%T%.9fZ")
+      .level = message_parts[1]
+
+      if (length(message_parts) == 6) {
+        .plugin = message_parts[2]
+        .processor = message_parts[3]
+        .message = message_parts[4]
+
+        if (exists(message_parts[5])) {
+          .metadata = parse_json!(message_parts[5])
+          . = merge!(., .metadata)
+          del(.metadata)
+        }
+      } else {
+        .processor = message_parts[2]
+        .message = message_parts[3]
+
+        if (exists(message_parts[4])) {
+          .metadata = parse_json!(message_parts[4])
+          . = merge!(., .metadata)
+          del(.metadata)
+        }
+      }
+
+      if (exists(.query)) {
+        query_parts = split!(.query, r'\s')
+        .domain = query_parts[0]
+        .record = query_parts[2]
+        .address = query_parts[5]
+      }
+
+sinks:
+  # 同步到 loki，根据实际情况修改 endpoint 的值
+  loki:
+    type: loki
+    inputs:
+      - mosdns-data
+    endpoint: 'http://metrics.home.lostattractor.net:3100'
+    encoding:
+      codec: json
+    labels:
+      app: '{{ SYSLOG_IDENTIFIER }}'
+      host: '{{ host }}'
+    healthcheck:
+      enabled: true
+
+  # 临时输出转换数据到 vector 控制台（生产环境请禁用）
+  debug_mosdns:
+    type: console
+    inputs:
+      - mosdns-data
+    encoding:
+      codec: json

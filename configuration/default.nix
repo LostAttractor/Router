@@ -10,6 +10,7 @@
     ./features/network/miniupnpd.nix
     ./features/network/tailscale.nix
     ./features/network/dae.nix
+    ./features/network/tor.nix
     (inputs.homelab + "/features/basic.nix")
     (inputs.homelab + "/features/network/avahi")
     (inputs.homelab + "/features/nix")

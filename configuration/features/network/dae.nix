@@ -9,7 +9,7 @@
   sops.templates."config.dae".content = ''
     global {
       # Bind to LAN and/or WAN as you want. Replace the interface name to your own.
-      lan_interface: ${network.interface.lan}, ${network.interface.manage}, ${network.interface.wg}, ${network.interface.tailscale}
+      lan_interface: ${network.interface.lan}, ${network.interface.tor}, ${network.interface.manage}, ${network.interface.security}, ${network.interface.wg}, ${network.interface.tailscale}
       wan_interface: auto # Use "auto" to auto detect WAN interface.
 
       log_level: info
@@ -27,6 +27,10 @@
       # domain++: 忽略 SNI 验证的同时, 以嗅探到的域名重新进行路由, 带来更好的准确度, 同时也意味着整个过程中，如果域名分流正确工作，可以抵御 DNS 污染
       #           但也带来了更大的性能开销
       dial_mode: domain++  # SNI错误?
+    }
+
+    node {
+      tor: 'socks5://127.0.0.1:9050'
     }
 
     subscription {
@@ -54,6 +58,10 @@
         filter: subtag(imm) && name(keyword: 'SGP')
         policy: min_avg10
       }
+      tor {
+        filter: name(tor)
+        policy: fixed(0)
+      }
     }
 
     # See https://github.com/daeuniverse/dae/blob/main/docs/en/configuration/routing.md for full examples.
@@ -68,6 +76,9 @@
 
       ## Bypass Private IPs
       dip(geoip:private) -> direct
+
+      ## Interface-based routing
+      ifname(tor) -> tor
 
       ## Application-based routing
       # Bypass DSCP 0x4 (e.g. Bittorrent)

@@ -17,7 +17,7 @@ in {
       local = "/${domain}/";  # Not forwarding local domain to upstream
       expand-hosts = true;
       # Interface bind
-      interface = [ private.lan private.security private.manage ];
+      interface = [ private.lan private.tor private.security private.manage ];
       bind-dynamic = true;
       # Bind domain to interface's IPs
       interface-name = [ "${domain},${private.lan}" "router.${domain},${private.lan}" ];
@@ -42,6 +42,9 @@ in {
         # lan
         "set:${private.lan},10.0.1.0,10.0.254.255,24h"  # Reserve 10.0.0.0/24 & 10.0.255.0/24
         "set:${private.lan},::fff,::ffff,constructor:${private.lan},ra-names"
+        # tor
+        "set:${private.tor},10.1.1.0,10.1.254.255,24h"  # Reserve 10.1.0.0/24 & 10.1.255.0/24
+        "set:${private.tor},::fff,::ffff,constructor:${private.tor},ra-names"
         # security
         "set:${private.security},10.10.1.0,10.10.254.255,24h"  # Reserve 10.10.0.0/24 & 10.10.255.0/24
         "set:${private.security},::fff,::ffff,constructor:${private.security},ra-names"

@@ -27,6 +27,7 @@
         # Layer 2 encapsulated
         lan = "lan";  # VLAN 1 on downstream
         direct = "direct"; # VLAN 2 on downstream
+        tor = "tor"; # VLAN 3 on downstream
         security = "security"; # VLAN 10 on downstream
         manage = "manage"; # VLAN 100 on downstream
         onu = upstream; # Untagged on upstream / VLAN 4094 on downstream

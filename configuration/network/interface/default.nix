@@ -8,6 +8,7 @@ with lib;
     ./wan/dhcp
     ./wan/qos
     ./br-lan
+    ./tor
     ./security
     ./manage
     ./wireguard
@@ -22,6 +23,7 @@ with lib;
     world = mkOption { type = types.str; };
     private = {
       lan = mkOption { type = types.str; };
+      tor = mkOption { type = types.str; };
       security = mkOption { type = types.str; };
       manage = mkOption { type = types.str; };
       wg = mkOption { type = types.str; };

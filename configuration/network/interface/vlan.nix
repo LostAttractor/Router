@@ -7,7 +7,7 @@
       name = network.interface.downstream;
       networkConfig = {
         LinkLocalAddressing = "no";
-        VLAN = with network.interface; [ lan direct security manage ];
+        VLAN = with network.interface; [ lan direct tor security manage ];
       };
       linkConfig = {
         RequiredForOnline = false;
@@ -29,6 +29,13 @@
         Name = network.interface.direct;
       };
       vlanConfig.Id = 2;
+    };
+    netdevs."00-${network.interface.tor}" = {
+      netdevConfig = {
+        Kind = "vlan";
+        Name = network.interface.tor;
+      };
+      vlanConfig.Id = 3;
     };
     # security zone
     netdevs."00-${network.interface.security}" = {
