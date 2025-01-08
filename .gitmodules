@@ -1,3 +1,0 @@
-[submodule "configuration/network/interface/wan/qos/bpf"]
-	path = configuration/network/interface/wan/qos/bpf
-	url = https://github.com/LostAttractor/bpf_redirect.git
